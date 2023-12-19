@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  scrumDatabases:
+    image: mongo:latest
+    container_name: "scrumDatabases"
+    ports:
+      - 27017:27017
+
+  bookapp:
+    image: scrumceremony:0.0.1
+    container_name: scrumceremony
+    ports:
+      - 9093:9093
+    links:
+      - scrumDatabases
