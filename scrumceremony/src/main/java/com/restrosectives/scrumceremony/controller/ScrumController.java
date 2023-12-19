@@ -32,9 +32,14 @@ public class ScrumController
     public ResponseEntity<String> saveRetrospective(@RequestBody Retrospective retrospective) {
 
         try {
-            Retrospective retrospectivesaved=scrumservice.saveRestrospective(retrospective);
-            LOG.info("Retrospective saved to the database"+retrospectivesaved);
-            return new ResponseEntity<String>("Retrospective saved with id" +retrospectivesaved.getId(), HttpStatus.CREATED);
+            if(retrospective.getDate().isEmpty() || retrospective.getParticipants().isEmpty()){
+                return new ResponseEntity<>("Date or Participants list is missing.", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            else {
+                Retrospective retrospectivesaved = scrumservice.saveRestrospective(retrospective);
+                LOG.info("Retrospective saved to the database" + retrospectivesaved);
+                return new ResponseEntity<String>("Retrospective saved with id" + retrospectivesaved.getId(), HttpStatus.CREATED);
+            }
         } catch (Exception e) {
             return new ResponseEntity<>("Unable to save Retrospective", HttpStatus.INTERNAL_SERVER_ERROR);
         }
